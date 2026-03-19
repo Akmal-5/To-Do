@@ -1,5 +1,5 @@
 .env
 venv
 *.txt
-main.py
 __pycache__
+черновик.py
