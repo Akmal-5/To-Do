@@ -1,9 +1,18 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI
+from db.create_db import create_tables
 
-app = FastAPI(title="ToDo-project📝")
+app = FastAPI(
+    title="To_Do 📝"
+)
 
-@app.get("/home/" , summary="Главная страница1️⃣")
+@app.on_event("startup")
+async def on_startup():
+    await create_tables()
+
+@app.get("/home/" ,
+         summary="Главная страница" ,
+         tags=["Home⬆"])
 async def home () :
     return {
-        "message" : "Главная страница"
-    }
+        "message" : "Главная страница ⬆"
+    } 
