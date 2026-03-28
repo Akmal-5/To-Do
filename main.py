@@ -5,10 +5,7 @@ from db.config import AsyncSessionMaker
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from db.data_manipulation import (create_user)
-
-async def get_session () :
-    async with AsyncSessionMaker() as session :
-        yield session
+from Depends.depends import get_session
 
 app = FastAPI(
     title="To_Do 📝"
