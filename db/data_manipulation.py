@@ -9,7 +9,7 @@ async def create_user (session : AsyncSession , user_data) :
                                        User.password == user_data.password))
     
     user = result.scalar_one_or_none()
-    
+
     if not user :
         
         session.add(User(

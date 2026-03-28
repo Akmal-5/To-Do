@@ -25,7 +25,7 @@ async def home () :
     
 @app.post("/auth/register/" ,
           summary="Регистрация ✅",
-          tags=["Users"] ,
+          tags=["Users🙍‍♂️"] ,
           status_code=status.HTTP_201_CREATED)
 
 async def user_register (user : User , 
@@ -40,4 +40,8 @@ async def user_register (user : User ,
         return result
     
     raise HTTPException(status_code=status.HTTP_409_CONFLICT,
-                        detail= "This user already exists in the database.") 
+                        detail= "This user already exists in the database.")
+    
+@app.post("/auth/login" , summary="Авторизация🔐" , tags=["Users🙍‍♂️"])
+async def user_login () :
+    pass
