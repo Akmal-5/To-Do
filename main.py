@@ -37,6 +37,7 @@ async def user_register (user : User ,
     result = await create_user(session , user)
     
     if result :
+        
         await session.commit()
         
         return result

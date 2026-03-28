@@ -22,4 +22,3 @@ async def create_user (session : AsyncSession , user_data) :
         return {
             "message" : "Добавил в бд"
         }
-    
