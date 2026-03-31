@@ -22,3 +22,10 @@ async def create_user (session : AsyncSession , user_data) :
         return {
             "message" : "Добавил в бд"
         }
+        
+async def user_verification (session : AsyncSession , users_data) :
+    
+    result = await session.execute(select(User).where(User.username == users_data.username,
+                                                      User.password == users_data.password))
+        
+    user = result.scalar_one_or_none()

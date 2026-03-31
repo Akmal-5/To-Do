@@ -16,3 +16,11 @@ class UsersNote (BaseModel) :
     description : int | None = Field(
         default=None
     )
+
+#Для регистрации пользователя
+class UserLog (BaseModel) :
+    
+    username : str = Field(min_length=3 ,
+                           description="Имя пользователя")
+    password : str = Field(min_length=4 ,
+                           description="Пароль пользователя")

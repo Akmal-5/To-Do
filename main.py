@@ -1,10 +1,10 @@
 from fastapi import FastAPI , Depends , status , HTTPException
 from db.create_db import create_tables
-from models.models_data import User
-from db.config import AsyncSessionMaker
+from models.models_data import User , UserLog
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
-from db.data_manipulation import (create_user)
+from db.data_manipulation import (create_user , 
+                                  user_verification)
 from Depends.depends import get_session
 
 app = FastAPI(
@@ -44,5 +44,7 @@ async def user_register (user : User ,
                         detail= "This user already exists in the database.")
 
 @app.post("/auth/login" , summary="Авторизация🔐" , tags=["Users🙍‍♂️"])
-async def user_login () :
-    pass
+async def user_login (userlog : UserLog ,
+                      session : Annotated[AsyncSession , Depends(get_session)]) :
+    
+    await user_verification(session , userlog)
