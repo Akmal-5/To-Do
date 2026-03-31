@@ -2,6 +2,7 @@ from db.config import Base
 from sqlalchemy import String , ForeignKey
 from sqlalchemy.orm import Mapped ,  mapped_column
 
+#Саздание таблиц с помощью классов
 class UsersNote(Base) :
     
     __tablename__ = "users_note"

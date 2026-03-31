@@ -5,4 +5,6 @@ async def get_session () :
     async with AsyncSessionMaker() as session :
         yield session
 
-#Для создание и проверки JWT
+#Функция для авторизации
+async def gwt_OAuth () :
+    pass

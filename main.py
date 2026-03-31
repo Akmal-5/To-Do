@@ -11,6 +11,7 @@ app = FastAPI(
     title="To_Do 📝"
 )
 
+#Устаревший способ !
 @app.on_event("startup")
 async def on_startup():
     await create_tables()
@@ -41,7 +42,7 @@ async def user_register (user : User ,
     
     raise HTTPException(status_code=status.HTTP_409_CONFLICT,
                         detail= "This user already exists in the database.")
-    
+
 @app.post("/auth/login" , summary="Авторизация🔐" , tags=["Users🙍‍♂️"])
 async def user_login () :
     pass
