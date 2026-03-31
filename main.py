@@ -6,6 +6,8 @@ from typing import Annotated
 from db.data_manipulation import (create_user , 
                                   user_verification)
 from Depends.create_session import get_session
+from Depends.auth_scheme import encode_jwt , decode_jwt
+from fastapi.security import HTTPAuthorizationCredentials
 
 app = FastAPI(
     title="To_Do 📝"
@@ -50,6 +52,10 @@ async def user_login (userlog : UserLog ,
     result = await user_verification(session , userlog)
     
     if result :
-         return result
-      
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+        res = encode_jwt(result)
+        
+        return {
+            "token" : res  
+        }
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                        detail="Incorrect data or you are not registered")

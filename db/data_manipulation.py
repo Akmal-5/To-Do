@@ -1,4 +1,3 @@
-#Создание удоление то есть манипуляция данными
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from db.User import User
