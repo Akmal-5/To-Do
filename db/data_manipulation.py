@@ -13,7 +13,6 @@ async def create_user (session : AsyncSession , user_data) :
     if not user :
         
         session.add(User(
-            
             username = user_data.username,
             password = user_data.password,
             email = user_data.email   
@@ -27,5 +26,8 @@ async def user_verification (session : AsyncSession , users_data) :
     
     result = await session.execute(select(User).where(User.username == users_data.username,
                                                       User.password == users_data.password))
-        
     user = result.scalar_one_or_none()
+    return {
+        "user_id": user.id,
+        "username": user.username 
+    }

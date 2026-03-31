@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from db.data_manipulation import (create_user , 
                                   user_verification)
-from Depends.depends import get_session
+from Depends.create_session import get_session
 
 app = FastAPI(
     title="To_Do 📝"
@@ -47,4 +47,9 @@ async def user_register (user : User ,
 async def user_login (userlog : UserLog ,
                       session : Annotated[AsyncSession , Depends(get_session)]) :
     
-    await user_verification(session , userlog)
+    result = await user_verification(session , userlog)
+    
+    if result :
+         return result
+      
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
