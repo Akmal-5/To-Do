@@ -13,7 +13,7 @@ class User (BaseModel) :
 class UserTasks (BaseModel) :
     
     title : str 
-    description : str | None = Field(
+    description : str  | None = Field(
         default=None
     )
 
