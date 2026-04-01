@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from db.User import User
+from db.UsersNote import UsersNote
 
 async def create_user (session : AsyncSession , user_data) :
     
@@ -29,4 +30,16 @@ async def user_verification (session : AsyncSession , users_data) :
     return {
         "user_id": user.id,
         "username": user.username 
+    }
+    
+def create_user_task (session : AsyncSession , user_id , user_task_data):
+    
+    session.add(UsersNote(
+        user_id = user_id,
+        title = user_task_data.title,
+        description = user_task_data.description
+    ))
+    
+    return {
+        "message" : "ваши данные добавлены в БД"
     }
