@@ -35,7 +35,8 @@ def decode_jwt (auth : Annotated[HTTPAuthorizationCredentials , Depends(secret)]
     try :
         
         token_decode = jwt.decode(token ,  SECRET_KEY , [ALGORITHM])
-        return token_decode
+        user_id = token_decode.get("user_id")
+        return user_id
     
     except ExpiredSignatureError :
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
