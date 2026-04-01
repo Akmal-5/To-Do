@@ -1,6 +1,6 @@
-from fastapi import FastAPI , Depends , status , HTTPException
+from fastapi import FastAPI , Depends , status , HTTPException , Query
 from db.create_db import create_tables
-from models.models_data import User , UserLog
+from models.models_data import User , UserLog , UserTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from db.data_manipulation import (create_user , 
@@ -60,3 +60,12 @@ async def user_login (userlog : UserLog ,
         
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
                         detail="Incorrect data or you are not registered")
+
+@app.post("/tasks/" ,
+          summary="Добавить задачу",
+          tags=["Tasks📝"]
+          )
+async def create_tasks (usertasks : UserTasks ,
+                        filter : Annotated[str|None , Query()] = None
+                        ) :
+    return usertasks
