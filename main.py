@@ -11,7 +11,7 @@ from Depends.auth_scheme import encode_jwt , decode_jwt
 from fastapi.security import HTTPAuthorizationCredentials
 
 app = FastAPI(
-    title="To_Do 📝"
+    title="To Do project📝"
 )
 
 @app.on_event("startup")
@@ -73,3 +73,12 @@ async def create_tasks (usertasks : UserTasks ,
     await session.commit()
     
     return result
+
+@app.get("/tasks/" ,
+        summary="Получить задачу",
+        tags=["Tasks📝"]
+        )
+async def get_task (session : Annotated[AsyncSession , Depends(get_session)],
+                    filtering_by_title : Annotated[str | None, Query()] = None) :
+    
+    pass
