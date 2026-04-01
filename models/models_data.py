@@ -10,10 +10,10 @@ class User (BaseModel) :
         description="Почта пользователя"
     )
 
-class UsersNote (BaseModel) :
+class UserTasks (BaseModel) :
     
     title : str 
-    description : int | None = Field(
+    description : str | None = Field(
         default=None
     )
 
