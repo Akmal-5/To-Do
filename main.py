@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from db.data_manipulation import (create_user , 
                                   user_verification,
-                                  create_user_task)
+                                  create_user_task,
+                                  get_users_task
+                                  )
 from Depends.create_session import get_session
 from Depends.auth_scheme import encode_jwt , decode_jwt
 from fastapi.security import HTTPAuthorizationCredentials
@@ -68,7 +70,7 @@ async def create_tasks (usertasks : UserTasks ,
                         user_id : Annotated[int , Depends(decode_jwt)],
                         session : Annotated[AsyncSession , Depends(get_session)],                       
                         ) :
-    result = create_user_task(session  , user_id , usertasks)
+    result = await create_user_task(session  , user_id , usertasks)
     
     await session.commit()
     
@@ -79,6 +81,7 @@ async def create_tasks (usertasks : UserTasks ,
         tags=["Tasks📝"]
         )
 async def get_task (session : Annotated[AsyncSession , Depends(get_session)],
+                    user_id : Annotated[int , Depends(decode_jwt)],
                     filtering_by_title : Annotated[str | None, Query()] = None) :
     
-    pass
+    return await get_users_task(session , user_id , filtering_by_title)
