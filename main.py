@@ -98,4 +98,14 @@ async def  delete_task (session : Annotated[AsyncSession , Depends(get_session)]
     result = await  delete_tasks(session ,  user_id , task_id)
     if result :
         return result
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND) 
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+@app.put("/tasks/update_tasks/{id}" ,
+        summary="Обновление задач" ,
+        tags=["Операции над задачами 🔍"] 
+        )
+async def update_task (session : Annotated[AsyncSession , Depends(get_session)],
+                       user_id : Annotated[int , Depends(decode_jwt)],
+                       task_id : Annotated[int , Path()]
+                       ) :
+    pass

@@ -61,7 +61,6 @@ async def delete_tasks (session : AsyncSession , user_id , task_id) :
     result = await  session.execute(select(UsersNote).where(UsersNote.user_id == user_id,
                                                      UsersNote.id == task_id 
                                                      ))
-    
     task = result.scalar_one_or_none()
     
     if task :
@@ -72,4 +71,6 @@ async def delete_tasks (session : AsyncSession , user_id , task_id) :
         return {
             "message" : "Ваша задачу успещно удолена"
         }
-    
+
+async def update_tasks (session : AsyncSession , user_id , task_id) :
+    pass
