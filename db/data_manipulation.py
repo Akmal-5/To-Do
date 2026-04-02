@@ -54,4 +54,22 @@ async def get_users_task (session : AsyncSession , user_id , filtering_by_title 
     
     result = await session.execute(query)
     
-    return result.scalars().all()   
+    return result.scalars().all()
+
+async def delete_tasks (session : AsyncSession , user_id , task_id) :
+    
+    result = await  session.execute(select(UsersNote).where(UsersNote.user_id == user_id,
+                                                     UsersNote.id == task_id 
+                                                     ))
+    
+    task = result.scalar_one_or_none()
+    
+    if task :
+        
+        await session.delete(task)
+        await session.commit()
+        
+        return {
+            "message" : "Ваша задачу успещно удолена"
+        }
+    
