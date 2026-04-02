@@ -32,7 +32,7 @@ async def user_verification (session : AsyncSession , users_data) :
         "username": user.username 
     }
     
-def create_user_task (session : AsyncSession , user_id , user_task_data):
+async def create_user_task (session : AsyncSession , user_id , user_task_data):
     
     session.add(UsersNote(
         user_id = user_id,
@@ -43,3 +43,15 @@ def create_user_task (session : AsyncSession , user_id , user_task_data):
     return {
         "message" : "ваши данные добавлены в БД"
     }
+
+async def get_users_task (session : AsyncSession , user_id , filtering_by_title = None):
+    
+    query = select(UsersNote).where(UsersNote.user_id == user_id)
+    
+    if filtering_by_title :
+        
+        query = query.where(UsersNote.title.contains(filtering_by_title))
+    
+    result = await session.execute(query)
+    
+    return result.scalars().all()   
