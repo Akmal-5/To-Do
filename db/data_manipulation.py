@@ -72,5 +72,23 @@ async def delete_tasks (session : AsyncSession , user_id , task_id) :
             "message" : "Ваша задачу успещно удолена"
         }
 
-async def update_tasks (session : AsyncSession , user_id , task_id) :
-    pass
+async def update_tasks (session : AsyncSession , user_id , task_id , updated_data) :
+    result = await session.execute(select(UsersNote).where(UsersNote.user_id == user_id,
+                                                     UsersNote.id == task_id
+                                                     ))
+    task = result.scalar_one_or_none()
+    
+    if task :
+        task.title = updated_data.title
+        task.description = updated_data.description
+        await session.commit()
+        
+        await session.refresh(task)
+        
+        return {
+            "message" : "Ваши данные обновлены",
+            "updated_task" : {
+                "title" : task.title,
+                "description" : task.description
+            }
+        }
