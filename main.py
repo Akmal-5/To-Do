@@ -7,7 +7,8 @@ from db.data_manipulation import (create_user ,
                                   user_verification,
                                   create_user_task,
                                   get_users_task,
-                                  delete_tasks
+                                  delete_tasks,
+                                  update_tasks
                                   )
 from Depends.create_session import get_session
 from Depends.auth_scheme import encode_jwt , decode_jwt
@@ -106,6 +107,16 @@ async def  delete_task (session : Annotated[AsyncSession , Depends(get_session)]
         )
 async def update_task (session : Annotated[AsyncSession , Depends(get_session)],
                        user_id : Annotated[int , Depends(decode_jwt)],
-                       task_id : Annotated[int , Path()]
+                       id : Annotated[int , Path()],
+                       updated_task : UserTasks
                        ) :
-    pass
+    result = await update_tasks(session ,
+                                user_id ,
+                                id ,
+                                updated_task)
+    if result :
+        return result
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail="Taks not found"
+                        )
