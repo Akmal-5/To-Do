@@ -1,8 +1,6 @@
 # 📝 **To-Do**  
 **Backend API для умного управления задачами с JWT-авторизацией**
 
-![To-Do Banner](https://via.placeholder.com/1200x300/4F46E5/FFFFFF?text=To-Do+Backend+API)  
-*(Замени на свой реальный баннер после заливки на GitHub)*
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue?style=for-the-badge&logo=python)](https://www.python.org)
