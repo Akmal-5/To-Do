@@ -27,10 +27,12 @@ async def user_verification (session : AsyncSession , users_data) :
     result = await session.execute(select(User).where(User.username == users_data.username,
                                                       User.password == users_data.password))
     user = result.scalar_one_or_none()
-    return {
-        "user_id": user.id,
-        "username": user.username 
-    }
+    
+    if user :
+        return {
+            "user_id": user.id,
+            "username": user.username 
+        }
     
 async def create_user_task (session : AsyncSession , user_id , user_task_data):
     
