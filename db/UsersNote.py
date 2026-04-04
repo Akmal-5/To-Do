@@ -2,7 +2,7 @@ from db.config import Base
 from sqlalchemy import String , ForeignKey
 from sqlalchemy.orm import Mapped ,  mapped_column
 
-#Саздание таблиц с помощью классов
+
 class UsersNote(Base) :
     
     __tablename__ = "users_note"
@@ -11,3 +11,4 @@ class UsersNote(Base) :
     title : Mapped[str] = mapped_column(String(200) ,
                                         nullable=False)    
     description : Mapped[str] = mapped_column(String(300))
+    completed : Mapped[bool] = mapped_column(default=False)
