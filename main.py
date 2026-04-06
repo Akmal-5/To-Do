@@ -8,7 +8,8 @@ from db.data_manipulation import (create_user ,
                                   create_user_task,
                                   get_users_task,
                                   delete_tasks,
-                                  update_tasks
+                                  update_tasks,
+                                  completed_tasks
                                   )
 from Depends.create_session import get_session
 from Depends.auth_scheme import encode_jwt , decode_jwt
@@ -101,7 +102,7 @@ async def  delete_task (session : Annotated[AsyncSession , Depends(get_session)]
         return result
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
-@app.put("/tasks/update_tasks/{id}" ,
+@app.put("/tasks/update_tasks/{id}/" ,
         summary="Обновление задач" ,
         tags=["Операции над задачами 🔍"] 
         )
@@ -119,4 +120,21 @@ async def update_task (session : Annotated[AsyncSession , Depends(get_session)],
     
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail="Taks not found"
+                        )
+    
+@app.put("/created/{id}/" , 
+         summary="Выполнил задачу", 
+         tags=["Операции над задачами 🔍"]
+         )
+async def created_task (session : Annotated[AsyncSession , Depends(get_session)],
+                        id : Annotated[int , Path()],
+                        user_id : Annotated[int , Depends(decode_jwt)]
+                        ) :
+    result = await completed_tasks(session , user_id , id)
+    
+    if result :
+        return result
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
+                        detail="task not found"
                         )
