@@ -138,3 +138,10 @@ async def created_task (session : Annotated[AsyncSession , Depends(get_session)]
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
                         detail="task not found"
                         )
+    
+@app.get("/task_ai/",
+         summary= "Создание задач с помощью ИИ",
+         tags=["AI 🤖"]
+        )
+async def creat_task_ai () :
+    pass
