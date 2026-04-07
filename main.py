@@ -144,7 +144,11 @@ async def created_task (session : Annotated[AsyncSession , Depends(get_session)]
          summary= "Создание задач с помощью ИИ",
          tags=["AI 🤖"]
         )
-async def creat_task_ai (user_prompt : AiRequest) :
+async def creat_task_ai (
+        user_prompt : AiRequest,
+        _: Annotated[int , Depends(decode_jwt)]
+        ) :
+    
     result = await sending_a_reply(user_prompt.prompt)
     result_json = json.loads(result)
     return result_json 
