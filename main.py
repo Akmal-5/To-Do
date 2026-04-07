@@ -1,6 +1,6 @@
-from fastapi import FastAPI , Depends , status , HTTPException , Query , Path
+from fastapi import FastAPI , Depends , status , HTTPException , Query , Path , Body
 from db.create_db import create_tables
-from models.models_data import User , UserLog , UserTasks
+from models.models_data import User , UserLog , UserTasks , AiRequest
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from db.data_manipulation import (create_user , 
@@ -13,7 +13,8 @@ from db.data_manipulation import (create_user ,
                                   )
 from Depends.create_session import get_session
 from Depends.auth_scheme import encode_jwt , decode_jwt
-from fastapi.security import HTTPAuthorizationCredentials
+from model_ai.ai_text import sending_a_reply
+import json
 
 app = FastAPI(
     title="To Do project📝"
@@ -139,9 +140,11 @@ async def created_task (session : Annotated[AsyncSession , Depends(get_session)]
                         detail="task not found"
                         )
     
-@app.get("/task_ai/",
+@app.post("/task_ai/",
          summary= "Создание задач с помощью ИИ",
          tags=["AI 🤖"]
         )
-async def creat_task_ai () :
-    pass
+async def creat_task_ai (user_prompt : AiRequest) :
+    result = await sending_a_reply(user_prompt.prompt)
+    result_json = json.loads(result)
+    return result_json 
