@@ -150,5 +150,7 @@ async def creat_task_ai (
         ) :
     
     result = await sending_a_reply(user_prompt.prompt)
-    result_json = json.loads(result)
-    return result_json 
+    if result : 
+        result_json = json.loads(result)
+        return result_json 
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
