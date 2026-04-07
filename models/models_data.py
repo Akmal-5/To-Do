@@ -24,3 +24,6 @@ class UserLog (BaseModel) :
                            description="Имя пользователя")
     password : str = Field(min_length=4 ,
                            description="Пароль пользователя")
+
+class AiRequest (BaseModel) :
+    prompt : str 
