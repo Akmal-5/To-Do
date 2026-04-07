@@ -6,7 +6,7 @@ load_dotenv(find_dotenv())
 
 client = AsyncGroq(api_key=os.getenv("API_KEY"))
 
-async def sending_a_reply(question, user_id ) :
+async def sending_a_reply(question) :
     response = await client.chat.completions.create(
         model="llama-3.1-8b-instant",   
         messages= [
