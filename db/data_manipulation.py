@@ -41,10 +41,8 @@ async def create_user_task (session : AsyncSession , user_id , user_task_data):
         title = user_task_data.title,
         description = user_task_data.description
     ))
-    
-    return {
-        "message" : "ваши данные добавлены в БД"
-    }
+    await session.commit()
+
 
 async def get_users_task (session : AsyncSession , user_id , filtering_by_title = None):
     
