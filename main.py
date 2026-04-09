@@ -74,12 +74,8 @@ async def create_tasks (usertasks : List[ UserTasks] ,
                         session : Annotated[AsyncSession , Depends(get_session)],                       
                         ) :
     
-    for task in usertasks:
-        await create_user_task(session   , user_id , task)
+   return await create_user_task(session , user_id , usertasks)
     
-    return {
-        "message" : "Ваши задачи добавлены в бд"
-    }
 
 @app.get("/tasks/" ,
         summary="Получить задачу",
