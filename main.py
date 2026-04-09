@@ -2,7 +2,7 @@ from fastapi import FastAPI , Depends , status , HTTPException , Query , Path , 
 from db.create_db import create_tables
 from models.models_data import User , UserLog , UserTasks , AiRequest
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Annotated
+from typing import Annotated , List
 from db.data_manipulation import (create_user , 
                                   user_verification,
                                   create_user_task,
@@ -15,7 +15,6 @@ from Depends.create_session import get_session
 from Depends.auth_scheme import encode_jwt , decode_jwt
 from model_ai.ai_text import sending_a_reply
 import json
-
 app = FastAPI(
     title="To Do project📝"
 )
@@ -70,15 +69,17 @@ async def user_login (userlog : UserLog ,
           tags=["Tasks📝"],
           status_code=status.HTTP_201_CREATED
           )
-async def create_tasks (usertasks : UserTasks ,
+async def create_tasks (usertasks : List[ UserTasks] ,
                         user_id : Annotated[int , Depends(decode_jwt)],
                         session : Annotated[AsyncSession , Depends(get_session)],                       
                         ) :
-    result = await create_user_task(session  , user_id , usertasks)
     
-    await session.commit()
+    for task in usertasks:
+        await create_user_task(session   , user_id , task)
     
-    return result
+    return {
+        "message" : "Ваши задачи добавлены в бд"
+    }
 
 @app.get("/tasks/" ,
         summary="Получить задачу",
