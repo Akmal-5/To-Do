@@ -36,13 +36,17 @@ async def user_verification (session : AsyncSession , users_data) :
     
 async def create_user_task (session : AsyncSession , user_id , user_task_data):
     
-    session.add(UsersNote(
-        user_id = user_id,
-        title = user_task_data.title,
-        description = user_task_data.description
-    ))
+    for task in user_task_data :
+        session.add(UsersNote(
+            user_id = user_id,
+            title = task.title,
+            description = task.description
+        ))
+        
     await session.commit()
-
+    return {
+        "message" : "Ваши задачи добавлены в бд!"
+    }
 
 async def get_users_task (session : AsyncSession , user_id , filtering_by_title = None):
     
