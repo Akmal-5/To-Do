@@ -43,8 +43,6 @@ async def user_register (user : User ,
     
     if result :
         
-        await session.commit()
-        
         return result
     
     raise HTTPException(status_code=status.HTTP_409_CONFLICT,
