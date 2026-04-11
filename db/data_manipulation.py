@@ -18,6 +18,7 @@ async def create_user (session : AsyncSession , user_data) :
             email = user_data.email   
         ))
         
+        await session.commit()
         return {
             "message" : "Добавил в бд"
         }
