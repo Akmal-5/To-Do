@@ -2,19 +2,22 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from db.User import User
 from db.UsersNote import UsersNote
+from fastapi import HTTPException , status
+import bcrypt
 
 async def create_user (session : AsyncSession , user_data) :
     
-    result  = await session.execute(select(User).where(User.username == user_data.username, 
-                                       User.password == user_data.password))
+    result  = await session.execute(select(User).where(User.username == user_data.username))
     
     user = result.scalar_one_or_none()
 
     if not user :
+        password_bytes = user_data.password.encode("utf-8")
+        password_hash = bcrypt.hashpw(password_bytes,  bcrypt.gensalt())
         
         session.add(User(
             username = user_data.username,
-            password = user_data.password,
+            password = password_hash.decode("utf-8"),
             email = user_data.email   
         ))
         
@@ -25,15 +28,25 @@ async def create_user (session : AsyncSession , user_data) :
         
 async def user_verification (session : AsyncSession , users_data) :
     
-    result = await session.execute(select(User).where(User.username == users_data.username,
-                                                      User.password == users_data.password))
+    result = await session.execute(select(User).where(User.username == users_data.username))
     user = result.scalar_one_or_none()
     
-    if user :
+    if not user :
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="There is no such user with such a nickname"
+                            )
+    password_result = bcrypt.checkpw(users_data.password.encode("utf-8"),
+                                     user.password.encode("utf-8")
+                                     )
+    if password_result :
         return {
             "user_id": user.id,
-            "username": user.username 
+            "username": user.username
         }
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                        detail="Incorrect password"
+                        )
+    
     
 async def create_user_task (session : AsyncSession , user_id , user_task_data):
     
